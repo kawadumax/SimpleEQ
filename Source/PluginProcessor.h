@@ -9,6 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+//#include <MyFilter.h>
+#include "MyFilter.h"
 
 //==============================================================================
 /**
@@ -22,6 +24,14 @@ public:
     //==============================================================================
     MultibandReverbAudioProcessor();
     ~MultibandReverbAudioProcessor() override;
+
+    /// <summary>
+    /// フィルタ用のクラス
+    /// </summary>
+    CMyFilter *cMyFilter;
+    //juce::AudioParameterChoiceAttributes attributes = juce::AudioParameterChoiceAttributes().withLabel("selected");
+    //param = std::make_unique<juce::AudioParameterChoice> ("paramID", "Parameter Name", juce::StringArray{ "a", "b", "c" }, 0, attributes);
+
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -57,6 +67,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    juce::AudioParameterChoice* filterType;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MultibandReverbAudioProcessor)
 };

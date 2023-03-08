@@ -22,11 +22,22 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor()
                        )
 #endif
 {
+    this->cMyFilter = new CMyFilter();
+    this->cMyFilter->LowPass(400.0, 1.0);
+    addParameter(filterType = new juce::AudioParameterChoice("filterTypeID",
+        "Filter Type",
+        juce::StringArray{ "HighPass","LowPass" },
+        0
+    ));
+
 }
 
 MultibandReverbAudioProcessor::~MultibandReverbAudioProcessor()
 {
-    // デストラクタのコメント
+    // デストラクタ
+    delete this->cMyFilter;
+    delete this->filterType;
+    
 }
 
 //==============================================================================
@@ -156,6 +167,11 @@ void MultibandReverbAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
         auto* channelData = buffer.getWritePointer (channel);
 
         // ..do something to the data...
+        int numSamples = buffer.getNumSamples();
+        for (auto sample = 0; sample < numSamples; ++sample)
+        {
+            channelData[sample] = this->cMyFilter->Process(channelData[sample]);
+        }
     }
 }
 
