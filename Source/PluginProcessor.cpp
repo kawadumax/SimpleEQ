@@ -23,10 +23,12 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor()
 #endif
 {
     this->cMyFilter = new CMyFilter();
-    this->cMyFilter->LowPass(400.0, 1.0);
+    this->cMyFilter->LowPass(400.0, 1.0, getSampleRate());
     addParameter(filterType = new juce::AudioParameterChoice("filterTypeID",
         "Filter Type",
-        juce::StringArray{ "HighPass","LowPass" },
+        juce::StringArray{ "LowPass","HighPass", "BandPass", 
+            "Notch", "LowShelf" , "HighShelf", "Peaking" ,"AllPass"
+        },
         0
     ));
 
@@ -107,6 +109,7 @@ void MultibandReverbAudioProcessor::prepareToPlay (double sampleRate, int sample
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+
 }
 
 void MultibandReverbAudioProcessor::releaseResources()
@@ -143,6 +146,46 @@ bool MultibandReverbAudioProcessor::isBusesLayoutSupported (const BusesLayout& l
 
 void MultibandReverbAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+
+    int choice = this->filterType->getIndex();
+
+    switch (choice) {
+    case 0:
+        std::cout << "You chose option 0\n";
+        this->cMyFilter->LowPass(400.0, 1.0, getSampleRate());
+        break;
+    case 1:
+        std::cout << "You chose option 1\n";
+        this->cMyFilter->HighPass(10000.0, 1.0, getSampleRate());
+        break;
+    case 2:
+        std::cout << "You chose option 2\n";
+        this->cMyFilter->BandPass(400.0, 1.0, getSampleRate());
+        break;
+    case 3:
+        std::cout << "You chose option 3\n";
+        this->cMyFilter->Notch(400.0, 1.0, getSampleRate());
+        break;
+    case 4:
+        std::cout << "You chose option 4\n";
+        this->cMyFilter->LowShelf(400.0, 1.0, getSampleRate());
+        break;
+    case 5:
+        std::cout << "You chose option 5\n";
+        this->cMyFilter->HighShelf(400.0, 1.0, getSampleRate());
+        break;
+    case 6:
+        std::cout << "You chose option 6\n";
+        this->cMyFilter->Peaking(400.0, 1.0, getSampleRate());
+        break;
+    case 7:
+        std::cout << "You chose option 7\n";
+        this->cMyFilter->AllPass(400.0, 1.0, getSampleRate());
+        break;
+    default:
+        std::cout << "Invalid choice\n";
+    }
+
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
