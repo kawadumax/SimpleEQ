@@ -15,7 +15,8 @@
 /**
 */
 class MultibandReverbAudioProcessorEditor  : public juce::AudioProcessorEditor,
-    public juce::Button::Listener
+    public juce::Button::Listener,
+    public juce::ComboBox::Listener
 {
 public:
     MultibandReverbAudioProcessorEditor (MultibandReverbAudioProcessor&);
@@ -26,6 +27,7 @@ public:
     void resized() override;
 
     void buttonClicked(juce::Button* button) override;
+    void comboBoxChanged(juce::ComboBox* comboBox) override;
 
 private:
     // This reference is provided as a quick way for your editor to

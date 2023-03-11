@@ -23,6 +23,17 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor (Multib
 
     // Add the TextButton to this component
     addAndMakeVisible(myButton);
+
+    // Create a ComboBox
+    myComboBox.addItem("Option 1", 1);
+    myComboBox.addItem("Option 2", 2);
+    myComboBox.addItem("Option 3", 3);
+
+    // Attach this component as a listener for the ComboBox
+    myComboBox.addListener(this);
+
+    // Add the ComboBox to this component
+    addAndMakeVisible(myComboBox);
 }
 
 MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
@@ -48,6 +59,9 @@ void MultibandReverbAudioProcessorEditor::resized()
     // 
     // Set the bounds of the TextButton
     myButton.setBounds(10, 10, 100, 30);
+
+    // Set the bounds of the ComboBox
+    myComboBox.setBounds(10, 50, 100, 30);
 }
 
 void MultibandReverbAudioProcessorEditor::buttonClicked(juce::Button* button)
@@ -55,5 +69,13 @@ void MultibandReverbAudioProcessorEditor::buttonClicked(juce::Button* button)
     if (button == &myButton) {
         // Handle button click here
         std::cout << "Button clicked!\n";
+    }
+}
+
+void MultibandReverbAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBox)
+{
+    if (comboBox == &myComboBox) {
+        int selectedId = comboBox->getSelectedId();
+        std::cout << "Selected item ID: " << selectedId << "\n";
     }
 }
