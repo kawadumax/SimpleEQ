@@ -19,7 +19,8 @@ class MultibandReverbAudioProcessor : public juce::AudioProcessor
 #if JucePlugin_Enable_ARA
 	, public juce::AudioProcessorARAExtension
 #endif
-	, public juce::AudioParameterChoice::Listener
+	//, public juce::AudioParameterChoice::Listener
+	, public juce::AudioProcessorValueTreeState::Listener
 {
 public:
 	//==============================================================================
@@ -30,13 +31,6 @@ public:
 	/// フィルタ用のクラス
 	/// </summary>
 	CMyFilter* cMyFilter;
-	//juce::AudioParameterChoiceAttributes attributes = juce::AudioParameterChoiceAttributes().withLabel("selected");
-	//param = std::make_unique<juce::AudioParameterChoice> ("paramID", "Parameter Name", juce::StringArray{ "a", "b", "c" }, 0, attributes);
-
-	/// <summary>
-	/// プラグイン全体の状態を保持するインスタンス
-	/// </summary>
-	//juce::AudioProcessorValueTreeState treeState;
 
 	//==============================================================================
 	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
@@ -71,11 +65,12 @@ public:
 	void getStateInformation(juce::MemoryBlock& destData) override;
 	void setStateInformation(const void* data, int sizeInBytes) override;
 
-	void parameterValueChanged(int parameterIndex, float newValue) override;
-	void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override;
-
+	//void parameterValueChanged(int parameterIndex, float newValue) override;
+	//void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override;
+	void parameterChanged(const juce::String& parameterID, float newValue) override;
 private:
 	juce::AudioParameterChoice* filterType;
+	juce::AudioProcessorValueTreeState audioProcessorValueTreeState;
 
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultibandReverbAudioProcessor)

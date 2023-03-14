@@ -10,29 +10,46 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-MultibandReverbAudioProcessor::MultibandReverbAudioProcessor()
+MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 #ifndef JucePlugin_PreferredChannelConfigurations
-	: AudioProcessor(BusesProperties()
+	AudioProcessor(BusesProperties()
 #if ! JucePlugin_IsMidiEffect
 #if ! JucePlugin_IsSynth
 		.withInput("Input", juce::AudioChannelSet::stereo(), true)
 #endif
 		.withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
-	)
+	), audioProcessorValueTreeState(
+		*this, nullptr, "PARAMETERS", {
+		std::make_unique<juce::AudioParameterChoice>(
+			"FilterTypeID",
+			"Filter Type",
+			juce::StringArray{ "LowPass","HighPass", "BandPass",
+				"Notch", "LowShelf" , "HighShelf", "Peaking" ,"AllPass"
+			},
+			0
+			)
+		})
 #endif
 {
-	DBG("Procrssor initializing");
+	DBG("Procrssor Initializing");
+
 	this->cMyFilter = new CMyFilter();
 	this->cMyFilter->LowPass(400.0, 1.0, getSampleRate());
-	addParameter(filterType = new juce::AudioParameterChoice("filterTypeID",
-		"Filter Type",
-		juce::StringArray{ "LowPass","HighPass", "BandPass",
-			"Notch", "LowShelf" , "HighShelf", "Peaking" ,"AllPass"
-		},
-		0
-	));
-	filterType->addListener(this);
+
+
+	//audioProcessorValueTreeState.createAndAddParameter("myParam", "My Parameter", "", filterType, nullptr);
+
+
+	//addParameter(filterType = new juce::AudioParameterChoice("filterTypeID",
+	//	"Filter Type",
+	//	juce::StringArray{ "LowPass","HighPass", "BandPass",
+	//		"Notch", "LowShelf" , "HighShelf", "Peaking" ,"AllPass"
+	//	},
+	//	0
+	//));
+	//filterType->addListener(this);
+	audioProcessorValueTreeState.addParameterListener("FilterTypeID", this);
 }
 
 MultibandReverbAudioProcessor::~MultibandReverbAudioProcessor()
@@ -204,56 +221,63 @@ void MultibandReverbAudioProcessor::setStateInformation(const void* data, int si
 	// whose contents will have been created by the getStateInformation() call.
 }
 
-void MultibandReverbAudioProcessor::parameterGestureChanged(int parameterIndex, bool gestureIsStarting)
-{
-	// nothing to do
-	DBG("You Gestured");
-}
+//void MultibandReverbAudioProcessor::parameterGestureChanged(int parameterIndex, bool gestureIsStarting)
+//{
+//	// nothing to do
+//	DBG("You Gestured");
+//}
 
-void MultibandReverbAudioProcessor::parameterValueChanged(int parameterIndex, float newValue)
+//void MultibandReverbAudioProcessor::parameterValueChanged(int parameterIndex, float newValue)
+//{
+//	// This method will be called whenever the parameter's value changes
+//	DBG("Parameter value changed : index = " +
+//		juce::String(parameterIndex) + "value = " + juce::String(newValue)
+//	);
+//	int choice = this->filterType->getIndex();
+//
+//	switch (choice) {
+//	case 0:
+//		DBG("You chose option 0");
+//		this->cMyFilter->LowPass(400.0, 1.0, getSampleRate());
+//		break;
+//	case 1:
+//		DBG("You chose option 1");
+//		this->cMyFilter->HighPass(10000.0, 1.0, getSampleRate());
+//		break;
+//	case 2:
+//		DBG("You chose option 2");
+//		this->cMyFilter->BandPass(400.0, 1.0, getSampleRate());
+//		break;
+//	case 3:
+//		DBG("You chose option 3");
+//		this->cMyFilter->Notch(400.0, 1.0, getSampleRate());
+//		break;
+//	case 4:
+//		DBG("You chose option 4");
+//		this->cMyFilter->LowShelf(400.0, 1.0, getSampleRate());
+//		break;
+//	case 5:
+//		DBG("You chose option 5");
+//		this->cMyFilter->HighShelf(400.0, 1.0, getSampleRate());
+//		break;
+//	case 6:
+//		DBG("You chose option 6");
+//		this->cMyFilter->Peaking(400.0, 1.0, getSampleRate());
+//		break;
+//	case 7:
+//		DBG("You chose option 7");
+//		this->cMyFilter->AllPass(400.0, 1.0, getSampleRate());
+//		break;
+//	default:
+//		DBG("Invalid choice");
+//	}
+//}
+
+void MultibandReverbAudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
 {
-	// This method will be called whenever the parameter's value changes
-	DBG("Parameter value changed : index = " +
-		juce::String(parameterIndex) + "value = " + juce::String(newValue)
+	DBG("Parameter value changed : ID = " +
+		parameterID + "value = " + juce::String(newValue)
 	);
-	int choice = this->filterType->getIndex();
-
-	switch (choice) {
-	case 0:
-		DBG("You chose option 0");
-		this->cMyFilter->LowPass(400.0, 1.0, getSampleRate());
-		break;
-	case 1:
-		DBG("You chose option 1");
-		this->cMyFilter->HighPass(10000.0, 1.0, getSampleRate());
-		break;
-	case 2:
-		DBG("You chose option 2");
-		this->cMyFilter->BandPass(400.0, 1.0, getSampleRate());
-		break;
-	case 3:
-		DBG("You chose option 3");
-		this->cMyFilter->Notch(400.0, 1.0, getSampleRate());
-		break;
-	case 4:
-		DBG("You chose option 4");
-		this->cMyFilter->LowShelf(400.0, 1.0, getSampleRate());
-		break;
-	case 5:
-		DBG("You chose option 5");
-		this->cMyFilter->HighShelf(400.0, 1.0, getSampleRate());
-		break;
-	case 6:
-		DBG("You chose option 6");
-		this->cMyFilter->Peaking(400.0, 1.0, getSampleRate());
-		break;
-	case 7:
-		DBG("You chose option 7");
-		this->cMyFilter->AllPass(400.0, 1.0, getSampleRate());
-		break;
-	default:
-		DBG("Invalid choice");
-	}
 }
 
 //==============================================================================
