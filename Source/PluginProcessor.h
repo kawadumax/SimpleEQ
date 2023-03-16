@@ -68,8 +68,11 @@ public:
 	//void parameterValueChanged(int parameterIndex, float newValue) override;
 	//void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override;
 	void parameterChanged(const juce::String& parameterID, float newValue) override;
+	//void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
+
+
 private:
-	juce::AudioParameterChoice* filterType;
+	//juce::AudioParameterChoice* filterType;
 	juce::AudioProcessorValueTreeState audioProcessorValueTreeState;
 
 	//==============================================================================

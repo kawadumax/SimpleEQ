@@ -10,9 +10,10 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(MultibandReverbAudioProcessor& p)
-	: AudioProcessorEditor(&p), audioProcessor(p)
+MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(MultibandReverbAudioProcessor& p, juce::AudioProcessorValueTreeState& vts)
+	: AudioProcessorEditor(&p), audioProcessor(p), valueTreeState(vts)
 {
+
 	// Make sure that before the constructor has finished, you've set the
 	// editor's size to whatever you need it to be.
 	setSize(400, 300);
@@ -25,12 +26,20 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	addAndMakeVisible(myButton);
 
 	// Create a ComboBox
-	myComboBox.addItem("UHO", 1);
-	myComboBox.addItem("AHO", 2);
-	myComboBox.addItem("OHO", 3);
+	//myComboBox.addItem("UHO", 1);
+	//myComboBox.addItem("AHO", 2);
+	//myComboBox.addItem("OHO", 3);
+	myComboBox.addItemList(juce::StringArray{ "LowPass","HighPass", "BandPass",
+				"Notch", "LowShelf" , "HighShelf", "Peaking" ,"AllPass"
+		}, 1);
 
 	// Attach this component as a listener for the ComboBox
 	myComboBox.addListener(this);
+
+	//filterTypeBoxAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(
+	//	valueTreeState, "FilterTypeID", myComboBox);
+
+	filterTypeBoxAttachment.reset(new ComboBoxAttachment(valueTreeState, "FilterTypeID", myComboBox)); // ’Ç‰Á
 
 	// Add the ComboBox to this component
 	addAndMakeVisible(myComboBox);

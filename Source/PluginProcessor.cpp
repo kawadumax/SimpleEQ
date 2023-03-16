@@ -56,7 +56,6 @@ MultibandReverbAudioProcessor::~MultibandReverbAudioProcessor()
 {
 	// デストラクタ
 	delete this->cMyFilter;
-	delete this->filterType;
 
 }
 
@@ -204,7 +203,7 @@ bool MultibandReverbAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* MultibandReverbAudioProcessor::createEditor()
 {
-	return new MultibandReverbAudioProcessorEditor(*this);
+	return new MultibandReverbAudioProcessorEditor(*this, audioProcessorValueTreeState);
 }
 
 //==============================================================================
@@ -272,11 +271,15 @@ void MultibandReverbAudioProcessor::setStateInformation(const void* data, int si
 //		DBG("Invalid choice");
 //	}
 //}
+//void MultibandReverbAudioProcessor::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+//{
+//	DBG("Value tree Property changed : ID = " + property);
+//}
 
 void MultibandReverbAudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
 {
 	DBG("Parameter value changed : ID = " +
-		parameterID + "value = " + juce::String(newValue)
+		parameterID + " value = " + juce::String(newValue)
 	);
 }
 
