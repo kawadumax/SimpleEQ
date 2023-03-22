@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 //#include <MyFilter.h>
 #include "MyFilter.h"
+#include "Constants.h"
 
 //==============================================================================
 /**

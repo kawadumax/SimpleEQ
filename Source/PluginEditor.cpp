@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+
 //==============================================================================
 MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(MultibandReverbAudioProcessor& p, juce::AudioProcessorValueTreeState& vts)
 	: AudioProcessorEditor(&p), audioProcessor(p), valueTreeState(vts)
@@ -21,28 +22,32 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	// Create a TextButton
 	myButton.setButtonText("Click me!");
 	myButton.addListener(this);
-
-	// Add the TextButton to this component
 	addAndMakeVisible(myButton);
 
 	// Create a ComboBox
-	//myComboBox.addItem("UHO", 1);
-	//myComboBox.addItem("AHO", 2);
-	//myComboBox.addItem("OHO", 3);
-	myComboBox.addItemList(juce::StringArray{ "LowPass","HighPass", "BandPass",
-				"Notch", "LowShelf" , "HighShelf", "Peaking" ,"AllPass"
-		}, 1);
+	myComboBox.addItemList(Constants::FILTER_OPTIONS, 1);
 
 	// Attach this component as a listener for the ComboBox
 	myComboBox.addListener(this);
-
-	//filterTypeBoxAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(
-	//	valueTreeState, "FilterTypeID", myComboBox);
 
 	filterTypeBoxAttachment.reset(new ComboBoxAttachment(valueTreeState, "FilterTypeID", myComboBox)); // 追加
 
 	// Add the ComboBox to this component
 	addAndMakeVisible(myComboBox);
+
+	//create LowPassKnob
+
+	// スライダーの範囲を設定する
+	lowPassKnob.setRange(0.0, 1.0, 0.01);
+
+	// スライダーの初期値を設定する
+	lowPassKnob.setValue(0.5);
+
+	// スライダーの位置とサイズを設定する
+	lowPassKnob.setBounds(10, 10, 200, 50);
+	lowPassKnob.setLookAndFeel(&customLookAndFeel);
+	lowPassKnob.addListener(this);
+	addAndMakeVisible(lowPassKnob);
 }
 
 MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
@@ -57,7 +62,6 @@ void MultibandReverbAudioProcessorEditor::paint(juce::Graphics& g)
 	g.setColour(juce::Colours::white);
 	g.setFont(15.0f);
 	g.drawFittedText("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
-
 
 }
 
@@ -88,4 +92,12 @@ void MultibandReverbAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboB
 		juce::String s = "Selected item ID: " + juce::String(selectedId);
 		DBG(s);
 	}
+}
+
+void MultibandReverbAudioProcessorEditor::sliderValueChanged(juce::Slider* slider) {
+	if (slider == &lowPassKnob) {
+		// Handle button click here
+		DBG("LowPassKnob Changed!");
+	}
+	slider->repaint();
 }

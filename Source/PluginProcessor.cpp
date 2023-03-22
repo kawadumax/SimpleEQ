@@ -24,9 +24,7 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 		std::make_unique<juce::AudioParameterChoice>(
 			"FilterTypeID",
 			"Filter Type",
-			juce::StringArray{ "LowPass","HighPass", "BandPass",
-				"Notch", "LowShelf" , "HighShelf", "Peaking" ,"AllPass"
-			},
+			Constants::FILTER_OPTIONS,
 			0
 			)
 		})
@@ -37,18 +35,6 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 	this->cMyFilter = new CMyFilter();
 	this->cMyFilter->LowPass(400.0, 1.0, getSampleRate());
 
-
-	//audioProcessorValueTreeState.createAndAddParameter("myParam", "My Parameter", "", filterType, nullptr);
-
-
-	//addParameter(filterType = new juce::AudioParameterChoice("filterTypeID",
-	//	"Filter Type",
-	//	juce::StringArray{ "LowPass","HighPass", "BandPass",
-	//		"Notch", "LowShelf" , "HighShelf", "Peaking" ,"AllPass"
-	//	},
-	//	0
-	//));
-	//filterType->addListener(this);
 	audioProcessorValueTreeState.addParameterListener("FilterTypeID", this);
 }
 
