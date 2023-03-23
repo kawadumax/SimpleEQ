@@ -12,7 +12,8 @@
 
 //==============================================================================
 MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(MultibandReverbAudioProcessor& p, juce::AudioProcessorValueTreeState& vts)
-	: AudioProcessorEditor(&p), audioProcessor(p), valueTreeState(vts)
+	: AudioProcessorEditor(&p), audioProcessor(p), valueTreeState(vts),
+	lowPassKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox)
 {
 
 	// Make sure that before the constructor has finished, you've set the
@@ -44,7 +45,7 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	lowPassKnob.setValue(0.5);
 
 	// スライダーの位置とサイズを設定する
-	lowPassKnob.setBounds(10, 10, 200, 50);
+	lowPassKnob.setBounds(200 - 25, 150 - 25, 50, 50);
 	lowPassKnob.setLookAndFeel(&customLookAndFeel);
 	lowPassKnob.addListener(this);
 	addAndMakeVisible(lowPassKnob);
@@ -58,10 +59,10 @@ MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
 void MultibandReverbAudioProcessorEditor::paint(juce::Graphics& g)
 {
 	// (Our component is opaque, so we must completely fill the background with a solid colour)
-	g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
-	g.setColour(juce::Colours::white);
-	g.setFont(15.0f);
-	g.drawFittedText("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+	//g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+	//g.setColour(juce::Colours::white);
+	//g.setFont(15.0f);
+	//g.drawFittedText("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
 
 }
 

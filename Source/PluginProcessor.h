@@ -70,7 +70,7 @@ public:
 private:
 	//juce::AudioParameterChoice* filterType;
 	juce::AudioProcessorValueTreeState audioProcessorValueTreeState;
-	CMyFilter* cMyFilter;
+	CMyFilter cMyFilter;
 
 
 	//==============================================================================

@@ -46,7 +46,7 @@ private:
 
 	juce::TextButton myButton;
 	juce::ComboBox myComboBox;
-	juce::Slider lowPassKnob = juce::Slider(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox);
+	juce::Slider lowPassKnob;
 	CustomLookAndFeel customLookAndFeel;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultibandReverbAudioProcessorEditor)

@@ -34,7 +34,7 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 {
 	DBG("Procrssor Initializing");
 
-	cMyFilter->LowPass(400.0, 1.0, getSampleRate());
+	cMyFilter.LowPass(400.0, 1.0, getSampleRate());
 
 	audioProcessorValueTreeState.addParameterListener("FilterTypeID", this);
 }
@@ -176,7 +176,7 @@ void MultibandReverbAudioProcessor::processBlock(juce::AudioBuffer<float>& buffe
 		int numSamples = buffer.getNumSamples();
 		for (auto sample = 0; sample < numSamples; ++sample)
 		{
-			channelData[sample] = this->cMyFilter->Process(channelData[sample]);
+			channelData[sample] = cMyFilter.Process(channelData[sample]);
 		}
 	}
 }
