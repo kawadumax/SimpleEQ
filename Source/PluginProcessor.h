@@ -28,11 +28,6 @@ public:
 	MultibandReverbAudioProcessor();
 	~MultibandReverbAudioProcessor() override;
 
-	/// <summary>
-	/// フィルタ用のクラス
-	/// </summary>
-	CMyFilter* cMyFilter;
-
 	//==============================================================================
 	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
 	void releaseResources() override;
@@ -75,6 +70,8 @@ public:
 private:
 	//juce::AudioParameterChoice* filterType;
 	juce::AudioProcessorValueTreeState audioProcessorValueTreeState;
+	CMyFilter* cMyFilter;
+
 
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultibandReverbAudioProcessor)

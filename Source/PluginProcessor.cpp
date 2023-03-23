@@ -27,13 +27,14 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 			Constants::FILTER_OPTIONS,
 			0
 			)
-		})
+		}
+	), cMyFilter()
+
 #endif
 {
 	DBG("Procrssor Initializing");
 
-	this->cMyFilter = new CMyFilter();
-	this->cMyFilter->LowPass(400.0, 1.0, getSampleRate());
+	cMyFilter->LowPass(400.0, 1.0, getSampleRate());
 
 	audioProcessorValueTreeState.addParameterListener("FilterTypeID", this);
 }
@@ -41,7 +42,6 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 MultibandReverbAudioProcessor::~MultibandReverbAudioProcessor()
 {
 	// デストラクタ
-	delete this->cMyFilter;
 
 }
 
