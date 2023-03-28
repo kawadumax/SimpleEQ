@@ -46,7 +46,12 @@ private:
 
 	juce::TextButton myButton;
 	juce::ComboBox myComboBox;
-	juce::Slider lowPassKnob;
+	juce::Slider freqKnob;
+	juce::Slider qKnob;
+	juce::Slider bandWidthKnob;
+	juce::Slider gainKnob;
+	juce::OwnedArray <juce::Slider> sliders;
+	//juce::Slider sliders[4];
 	CustomLookAndFeel customLookAndFeel;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultibandReverbAudioProcessorEditor)

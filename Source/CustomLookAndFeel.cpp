@@ -10,6 +10,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 {
 	// ノブの描画方法をここに記述します。
 	// 円周上のスライダーの位置を計算
+
 	float angle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
 	float radius = juce::jmin(width / 2, height / 2) - 10.0f;
 	float centerX = x + width * 0.5f;
@@ -18,6 +19,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 	float thumbCenterX = centerX + radius * std::cos(angle);
 	float thumbCenterY = centerY + radius * std::sin(angle);
 
+	DBG("angle: " + juce::String(angle));
 
 	// スライダーの背景を描画
 	g.setColour(juce::Colours::darkgrey);
