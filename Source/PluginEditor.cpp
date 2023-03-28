@@ -21,13 +21,6 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	gainKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox),
 	sliders({ &freqKnob, &qKnob, &bandWidthKnob, &gainKnob })
 {
-	/*freqKnob = new juce::Slider(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox);
-	sliders.add(freqKnob);*/
-	//sliders.add(&freqKnob);
-	//sliders.add(&qKnob);
-	//sliders.add(&bandWidthKnob);
-	//sliders.add(&gainKnob);
-
 	const int width = 600;
 	const int height = 300;
 	const int knobRange = 75;
@@ -37,8 +30,6 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	const int startKnobPosX = centerX - (knobRange * 2 + knobPadding * 1.5) + knobRange * 0.5;
 	const float startAngle = juce::MathConstants<float>::pi * 210.0f / 180.0f;
 	const float endAngle = juce::MathConstants<float>::pi * 510.0f / 180.0f;
-	//const int startAngle = juce::MathConstants<float>::pi * 3.0f / 4.0f;
-	//const int endAngle = juce::MathConstants<float>::pi * 9.0f / 4.0f;
 
 	// Make sure that before the constructor has finished, you've set the
 	// editor's size to whatever you need it to be.
@@ -79,18 +70,6 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 		addAndMakeVisible(slider);
 
 	}
-
-	//// スライダーの範囲を設定する
-	//lowPassKnob.setRange(0.0, 1.0, 0.01);
-
-	//// スライダーの初期値を設定する
-	//lowPassKnob.setValue(0.5);
-
-	//// スライダーの位置とサイズを設定する
-	//lowPassKnob.setBounds(200 - 25, 150 - 25, 50, 50);
-	//lowPassKnob.setLookAndFeel(&customLookAndFeel);
-	//lowPassKnob.addListener(this);
-	//addAndMakeVisible(lowPassKnob);
 }
 
 MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
@@ -100,11 +79,7 @@ MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
 //==============================================================================
 void MultibandReverbAudioProcessorEditor::paint(juce::Graphics& g)
 {
-	// (Our component is opaque, so we must completely fill the background with a solid colour)
-	//g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
-	//g.setColour(juce::Colours::white);
-	//g.setFont(15.0f);
-	//g.drawFittedText("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+
 
 }
 
