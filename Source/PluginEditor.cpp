@@ -11,23 +11,23 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-
 //==============================================================================
 MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(MultibandReverbAudioProcessor& p, juce::AudioProcessorValueTreeState& vts)
 	: AudioProcessorEditor(&p), audioProcessor(p), valueTreeState(vts),
-	freqKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox),
-	qKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox),
-	bandWidthKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox),
-	gainKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::NoTextBox),
-	sliders({ &freqKnob, &qKnob, &bandWidthKnob, &gainKnob })
+	freqKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxAbove),
+	qKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxAbove),
+	bandWidthKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxAbove),
+	gainKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxAbove),
+	sliders({ &freqKnob, &qKnob, &bandWidthKnob, &gainKnob }),
+	freqLabel("FrequencyLabel", "Frequency")
 {
 	const int width = 600;
 	const int height = 300;
-	const int knobRange = 75;
+	const int knobRange = 100;
 	const int knobPadding = 25;
-	const int centerX = width / 2;
-	const int centerY = height / 2;
-	const int startKnobPosX = centerX - (knobRange * 2 + knobPadding * 1.5) + knobRange * 0.5;
+	const float centerX = width / 2;
+	const float centerY = height / 2;
+	const float startKnobPosX = centerX - (knobRange * 2 + knobPadding * 1.5) + knobRange * 0.5;
 	const float startAngle = juce::MathConstants<float>::pi * 210.0f / 180.0f;
 	const float endAngle = juce::MathConstants<float>::pi * 510.0f / 180.0f;
 
@@ -35,23 +35,19 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	// editor's size to whatever you need it to be.
 	setSize(width, height);
 
-	// Create a TextButton
-	myButton.setButtonText("Click me!");
-	myButton.addListener(this);
-	addAndMakeVisible(myButton);
-
 	// Create a ComboBox
 	myComboBox.addItemList(Constants::FILTER_OPTIONS, 1);
 
 	// Attach this component as a listener for the ComboBox
 	myComboBox.addListener(this);
 
-	filterTypeBoxAttachment.reset(new ComboBoxAttachment(valueTreeState, "FilterTypeID", myComboBox)); // í«â¡
+	filterTypeBoxAttachment.reset(new ComboBoxAttachment(valueTreeState, Constants::PARAMETER_ID::FILTER_TYPE_ID, myComboBox)); // í«â¡
 
 	// Add the ComboBox to this component
 	addAndMakeVisible(myComboBox);
 
 	//Setting for Knobs
+	freqAttachment.reset(new SliderAttachment(valueTreeState, Constants::PARAMETER_ID::FREQUENCY_ID, freqKnob));
 
 	for (int index = 0; index < sliders.size(); ++index)
 	{
@@ -68,8 +64,19 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 		slider->setRotaryParameters(startAngle, endAngle, true);
 		slider->addListener(this);
 		addAndMakeVisible(slider);
-
 	}
+
+	//Make label for knobs
+	const auto fontSize = 14.0f;
+	freqLabel.setFont(juce::Font(fontSize));
+	freqLabel.setJustificationType(juce::Justification::centred);
+	freqLabel.setBounds(
+		freqKnob.getX(),
+		freqKnob.getBottom(),
+		freqKnob.getWidth(),
+		fontSize // ÉâÉxÉãÇÃçÇÇ≥ÇìKêÿÇ…ê›íË
+	);
+	addAndMakeVisible(freqLabel);
 }
 
 MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
@@ -88,8 +95,6 @@ void MultibandReverbAudioProcessorEditor::resized()
 	// This is generally where you'll want to lay out the positions of any
 	// subcomponents in your editor..
 	// 
-	// Set the bounds of the TextButton
-	myButton.setBounds(10, 10, 100, 30);
 
 	// Set the bounds of the ComboBox
 	myComboBox.setBounds(10, 50, 100, 30);
@@ -97,10 +102,10 @@ void MultibandReverbAudioProcessorEditor::resized()
 
 void MultibandReverbAudioProcessorEditor::buttonClicked(juce::Button* button)
 {
-	if (button == &myButton) {
-		// Handle button click here
-		DBG("Button Clicked!");
-	}
+	//if (button == &myButton) {
+	//	// Handle button click here
+	//	DBG("Button Clicked!");
+	//}
 }
 
 void MultibandReverbAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBox)

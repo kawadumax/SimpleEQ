@@ -17,10 +17,20 @@ public:
 		return constants;
 	}
 
-	//static const int FOO = 42;
-	//static const double BAR = 3.14;
 	inline static const juce::StringArray FILTER_OPTIONS = { "LowPass","HighPass", "BandPass",
 				"Notch", "LowShelf" , "HighShelf", "Peaking" ,"AllPass"
+	};
+
+	//inline static const juce::var PARAMETER_IDS = {
+	//	{"FREQ"}
+	//}
+	inline static const struct PARAMETER_ID {
+		using String = juce::String;
+		inline static const String FREQUENCY_ID = "FREQUENCY_ID";
+		inline static const String Q_ID = "Q_ID";
+		inline static const String BANDWIDTH_ID = "BANDWIDTH_ID";
+		inline static const String GAIN_ID = "GAIN_ID";
+		inline static const String FILTER_TYPE_ID = "FILTER_TYPE_ID";
 	};
 };
 

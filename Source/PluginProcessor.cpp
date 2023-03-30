@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "Constants.h"
 
 //==============================================================================
 MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
@@ -22,11 +23,35 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 	), audioProcessorValueTreeState(
 		*this, nullptr, "PARAMETERS", {
 		std::make_unique<juce::AudioParameterChoice>(
-			"FilterTypeID",
+			Constants::PARAMETER_ID::FILTER_TYPE_ID,
 			"Filter Type",
 			Constants::FILTER_OPTIONS,
 			0
-			)
+			),
+		std::make_unique<juce::AudioParameterFloat>(
+			Constants::PARAMETER_ID::FREQUENCY_ID,
+			"Frequency",
+			juce::NormalisableRange<float>(0.0, 1.0, 0.01),
+			0.5
+			),
+		std::make_unique<juce::AudioParameterFloat>(
+			Constants::PARAMETER_ID::Q_ID,
+			"Q",
+			juce::NormalisableRange<float>(0.0, 1.0, 0.01),
+			0.5
+			),
+		std::make_unique<juce::AudioParameterFloat>(
+			Constants::PARAMETER_ID::BANDWIDTH_ID,
+			"Bandwidth",
+			juce::NormalisableRange<float>(0.0, 1.0, 0.01),
+			0.5
+			),
+		std::make_unique<juce::AudioParameterFloat>(
+			Constants::PARAMETER_ID::GAIN_ID,
+			"Gain",
+			juce::NormalisableRange<float>(0.0, 1.0, 0.01),
+			0.5
+			),
 		}
 	), cMyFilter()
 
@@ -36,7 +61,7 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 
 	cMyFilter.LowPass(400.0, 1.0, getSampleRate());
 
-	audioProcessorValueTreeState.addParameterListener("FilterTypeID", this);
+	audioProcessorValueTreeState.addParameterListener(Constants::PARAMETER_ID::FILTER_TYPE_ID, this);
 }
 
 MultibandReverbAudioProcessor::~MultibandReverbAudioProcessor()

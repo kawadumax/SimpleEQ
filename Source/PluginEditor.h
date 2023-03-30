@@ -40,17 +40,22 @@ private:
 	MultibandReverbAudioProcessor& audioProcessor;
 
 	typedef juce::AudioProcessorValueTreeState::ComboBoxAttachment ComboBoxAttachment; // ’Ç‰Á
+	typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
 
 	juce::AudioProcessorValueTreeState& valueTreeState; // ’Ç‰Á
 	std::unique_ptr<ComboBoxAttachment> filterTypeBoxAttachment;
+	std::unique_ptr<SliderAttachment> freqAttachment;
 
-	juce::TextButton myButton;
 	juce::ComboBox myComboBox;
+
+
 	juce::Slider freqKnob;
 	juce::Slider qKnob;
 	juce::Slider bandWidthKnob;
 	juce::Slider gainKnob;
 	juce::OwnedArray <juce::Slider> sliders;
+
+	juce::Label freqLabel;
 	CustomLookAndFeel customLookAndFeel;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultibandReverbAudioProcessorEditor)
