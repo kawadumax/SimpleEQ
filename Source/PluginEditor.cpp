@@ -82,22 +82,6 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 		);
 		addAndMakeVisible(label);
 	}
-
-	//for (int index = 0; index < labels.size(); ++index)
-	//{
-	//	const auto& label = labels[index];
-	//	const auto& slider = sliders[index];
-	//	label->setFont(juce::Font(fontSize));
-	//	label->setJustificationType(juce::Justification::centred);
-	//	label->setBounds(
-	//		slider->getX(),
-	//		slider->getBottom(),
-	//		slider->getWidth(),
-	//		fontSize
-	//	);
-	//	addAndMakeVisible(label);
-	//}
-
 }
 
 MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
