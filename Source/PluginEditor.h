@@ -56,6 +56,10 @@ private:
 	juce::OwnedArray <juce::Slider> sliders;
 
 	juce::Label freqLabel;
+	juce::Label qLabel;
+	juce::Label bandWidthLabel;
+	juce::Label gainLabel;
+	juce::OwnedArray<juce::Label> labels;
 	CustomLookAndFeel customLookAndFeel;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultibandReverbAudioProcessorEditor)

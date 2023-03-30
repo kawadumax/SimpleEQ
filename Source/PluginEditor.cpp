@@ -19,7 +19,11 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	bandWidthKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxAbove),
 	gainKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxAbove),
 	sliders({ &freqKnob, &qKnob, &bandWidthKnob, &gainKnob }),
-	freqLabel("FrequencyLabel", "Frequency")
+	freqLabel("FrequencyLabel", "Frequency"),
+	qLabel("QLabel", "Q"),
+	bandWidthLabel("BandWidthLabel", "Bandwidth"),
+	gainLabel("GainLabel", "Gain"),
+	labels({ &freqLabel, &qLabel, &bandWidthLabel, &gainLabel })
 {
 	const int width = 600;
 	const int height = 300;
@@ -30,6 +34,7 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	const float startKnobPosX = centerX - (knobRange * 2 + knobPadding * 1.5) + knobRange * 0.5;
 	const float startAngle = juce::MathConstants<float>::pi * 210.0f / 180.0f;
 	const float endAngle = juce::MathConstants<float>::pi * 510.0f / 180.0f;
+	const float fontSize = 14.0f;
 
 	// Make sure that before the constructor has finished, you've set the
 	// editor's size to whatever you need it to be.
@@ -64,19 +69,35 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 		slider->setRotaryParameters(startAngle, endAngle, true);
 		slider->addListener(this);
 		addAndMakeVisible(slider);
+
+		//Make label for knobs
+		const auto& label = labels[index];
+		label->setFont(juce::Font(fontSize));
+		label->setJustificationType(juce::Justification::centred);
+		label->setBounds(
+			slider->getX(),
+			slider->getBottom(),
+			slider->getWidth(),
+			fontSize
+		);
+		addAndMakeVisible(label);
 	}
 
-	//Make label for knobs
-	const auto fontSize = 14.0f;
-	freqLabel.setFont(juce::Font(fontSize));
-	freqLabel.setJustificationType(juce::Justification::centred);
-	freqLabel.setBounds(
-		freqKnob.getX(),
-		freqKnob.getBottom(),
-		freqKnob.getWidth(),
-		fontSize // ÉâÉxÉãÇÃçÇÇ≥ÇìKêÿÇ…ê›íË
-	);
-	addAndMakeVisible(freqLabel);
+	//for (int index = 0; index < labels.size(); ++index)
+	//{
+	//	const auto& label = labels[index];
+	//	const auto& slider = sliders[index];
+	//	label->setFont(juce::Font(fontSize));
+	//	label->setJustificationType(juce::Justification::centred);
+	//	label->setBounds(
+	//		slider->getX(),
+	//		slider->getBottom(),
+	//		slider->getWidth(),
+	//		fontSize
+	//	);
+	//	addAndMakeVisible(label);
+	//}
+
 }
 
 MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
