@@ -66,7 +66,6 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 
 MultibandReverbAudioProcessor::~MultibandReverbAudioProcessor()
 {
-	// デストラクタ
 
 }
 

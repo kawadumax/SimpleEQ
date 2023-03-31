@@ -9,18 +9,15 @@
 #pragma once
 
 #include <JuceHeader.h>
-//#include <MyFilter.h>
 #include "MyFilter.h"
 #include "Constants.h"
 
 //==============================================================================
-/**
-*/
+
 class MultibandReverbAudioProcessor : public juce::AudioProcessor
 #if JucePlugin_Enable_ARA
 	, public juce::AudioProcessorARAExtension
 #endif
-	//, public juce::AudioParameterChoice::Listener
 	, public juce::AudioProcessorValueTreeState::Listener
 {
 public:
@@ -68,10 +65,8 @@ public:
 
 
 private:
-	//juce::AudioParameterChoice* filterType;
 	juce::AudioProcessorValueTreeState audioProcessorValueTreeState;
 	CMyFilter cMyFilter;
-
 
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultibandReverbAudioProcessor)
