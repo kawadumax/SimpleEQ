@@ -46,17 +46,17 @@ private:
 
 	juce::ComboBox myComboBox;
 
-	//juce::Slider freqKnob;
-	//juce::Slider qKnob;
-	//juce::Slider bandWidthKnob;
-	//juce::Slider gainKnob;
-	//juce::OwnedArray <juce::Slider> sliders;
+	juce::Slider freqKnob;
+	juce::Slider qKnob;
+	juce::Slider bandWidthKnob;
+	juce::Slider gainKnob;
+	juce::Array <juce::Slider*> sliders;
 
-	//juce::Label freqLabel;
-	//juce::Label qLabel;
-	//juce::Label bandWidthLabel;
-	//juce::Label gainLabel;
-	//juce::OwnedArray<juce::Label> labels;
+	juce::Label freqLabel;
+	juce::Label qLabel;
+	juce::Label bandWidthLabel;
+	juce::Label gainLabel;
+	juce::Array<juce::Label*> labels;
 	//CustomLookAndFeel customLookAndFeel;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultibandReverbAudioProcessorEditor)
