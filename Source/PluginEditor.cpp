@@ -25,41 +25,44 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	gainLabel("GainLabel", "Gain"),
 	labels({ &freqLabel, &qLabel, &bandWidthLabel, &gainLabel })
 {
-	const int width = 600;
-	const int height = 300;
-	const int knobRange = 100;
-	const int knobPadding = 25;
-	const float centerX = width / 2;
-	const float centerY = height / 2;
-	const float startKnobPosX = centerX - (knobRange * 2 + knobPadding * 1.5) + knobRange * 0.5;
-	const float startAngle = juce::MathConstants<float>::pi * 210.0f / 180.0f;
-	const float endAngle = juce::MathConstants<float>::pi * 510.0f / 180.0f;
-	const float fontSize = 14.0f;
+	DBG("Editor Constructed");
+	constexpr int width = 600;
+	constexpr int height = 300;
+	constexpr int knobRange = 100;
+	constexpr int knobPadding = 25;
+	constexpr float centerX = width / 2;
+	constexpr float centerY = height / 2;
+	constexpr float startKnobPosX = centerX - (knobRange * 2 + knobPadding * 1.5) + knobRange * 0.5;
+	constexpr float startAngle = juce::MathConstants<float>::pi * 210.0f / 180.0f;
+	constexpr float endAngle = juce::MathConstants<float>::pi * 510.0f / 180.0f;
+	constexpr float fontSize = 14.0f;
 
 	// Make sure that before the constructor has finished, you've set the
 	// editor's size to whatever you need it to be.
 	setSize(width, height);
 
 	// Create a ComboBox
-	myComboBox.addItemList(Constants::FILTER_OPTIONS, 1);
-	myComboBox.setBounds(10, 50, 100, 30);
+	filterTypeComboBox.addItemList(Constants::FILTER_OPTIONS, 1);
+	filterTypeComboBox.setBounds(10, 50, 100, 30);
 
 	//// Attach this component as a listener for the ComboBox
-	myComboBox.addListener(this);
+	//filterTypeComboBox.addListener(this);
 
-	filterTypeBoxAttachment.reset(new ComboBoxAttachment(valueTreeState, Constants::PARAMETER_ID::FILTER_TYPE_ID, myComboBox)); // ’Ç‰Á
+	filterTypeBoxAttachment.reset(new ComboBoxAttachment(valueTreeState, Constants::PARAMETER_ID::FILTER_TYPE_ID, filterTypeComboBox)); // ’Ç‰Á
 
 	//// Add the ComboBox to this component
-	addAndMakeVisible(myComboBox);
+	addAndMakeVisible(filterTypeComboBox);
 
 	//Setting for Knobs
-	//freqAttachment.reset(new SliderAttachment(valueTreeState, Constants::PARAMETER_ID::FREQUENCY_ID, freqKnob));
+	freqAttachment.reset(new SliderAttachment(valueTreeState, Constants::PARAMETER_ID::FREQUENCY_ID, freqKnob));
+	qAttachment.reset(new SliderAttachment(valueTreeState, Constants::PARAMETER_ID::Q_ID, qKnob));
+	bandwidthAttachment.reset(new SliderAttachment(valueTreeState, Constants::PARAMETER_ID::BANDWIDTH_ID, bandWidthKnob));
+	gainAttachment.reset(new SliderAttachment(valueTreeState, Constants::PARAMETER_ID::GAIN_ID, gainKnob));
 
 	for (int index = 0; index < sliders.size(); ++index)
 	{
 		const auto& slider = sliders[index];
 		slider->setRange(0.0, 1.0, 0.01);
-		slider->setValue(0.5);
 		slider->setBounds(
 			startKnobPosX + (knobRange + knobPadding) * index - knobRange * 0.5,
 			height * 0.75 - knobRange * 0.5,
@@ -87,8 +90,11 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 
 MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
 {
-	sliders.clear();
-	labels.clear();
+	DBG("Editor Destructed");
+	freqAttachment.reset();
+	qAttachment.reset();
+	bandwidthAttachment.reset();
+	gainAttachment.reset();
 }
 
 //==============================================================================
@@ -105,20 +111,3 @@ void MultibandReverbAudioProcessorEditor::resized()
 	// 
 
 }
-
-void MultibandReverbAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBox)
-{
-	if (comboBox == &myComboBox) {
-		int selectedId = comboBox->getSelectedId();
-		juce::String s = "Selected item ID: " + juce::String(selectedId);
-		DBG(s);
-	}
-}
-
-//void MultibandReverbAudioProcessorEditor::sliderValueChanged(juce::Slider* slider) {
-//	//if (slider == &lowPassKnob) {
-//		// Handle button click here
-//	DBG("LowPassKnob Changed!");
-//	//}
-//	slider->repaint();
-//}

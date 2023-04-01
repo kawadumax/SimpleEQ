@@ -16,9 +16,8 @@
 //==============================================================================
 /**
 */
-class MultibandReverbAudioProcessorEditor : public juce::AudioProcessorEditor,
-	public juce::ComboBox::Listener//,
-	//public juce::Slider::Listener
+class MultibandReverbAudioProcessorEditor : public juce::AudioProcessorEditor
+
 {
 public:
 	MultibandReverbAudioProcessorEditor(MultibandReverbAudioProcessor& p,
@@ -28,9 +27,6 @@ public:
 	//==============================================================================
 	void paint(juce::Graphics&) override;
 	void resized() override;
-
-	void comboBoxChanged(juce::ComboBox* comboBox) override;
-	//void sliderValueChanged(juce::Slider* slider) override;
 
 private:
 	// This reference is provided as a quick way for your editor to
@@ -42,9 +38,12 @@ private:
 
 	juce::AudioProcessorValueTreeState& valueTreeState;
 	std::unique_ptr<ComboBoxAttachment> filterTypeBoxAttachment;
-	//std::unique_ptr<SliderAttachment> freqAttachment;
+	std::unique_ptr<SliderAttachment> freqAttachment;
+	std::unique_ptr<SliderAttachment> qAttachment;
+	std::unique_ptr<SliderAttachment> bandwidthAttachment;
+	std::unique_ptr<SliderAttachment> gainAttachment;
 
-	juce::ComboBox myComboBox;
+	juce::ComboBox filterTypeComboBox;
 
 	juce::Slider freqKnob;
 	juce::Slider qKnob;
