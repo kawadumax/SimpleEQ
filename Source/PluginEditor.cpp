@@ -13,13 +13,7 @@
 
 //==============================================================================
 MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(MultibandReverbAudioProcessor& p, juce::AudioProcessorValueTreeState& vts)
-	: AudioProcessorEditor(&p), audioProcessor(p), valueTreeState(vts),
-	sliders({ &freqKnob, &qKnob, &bandWidthKnob, &gainKnob }),
-	freqLabel("FrequencyLabel", "Frequency"),
-	qLabel("QLabel", "Q"),
-	bandWidthLabel("BandWidthLabel", "Bandwidth"),
-	gainLabel("GainLabel", "Gain"),
-	labels({ &freqLabel, &qLabel, &bandWidthLabel, &gainLabel })
+	: AudioProcessorEditor(&p), audioProcessor(p), valueTreeState(vts)
 {
 	DBG("Editor Constructed");
 	constexpr int width = 600;
@@ -46,14 +40,11 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	addAndMakeVisible(filterTypeComboBox);
 
 	//Setting for Knobs
-	freqAttachment.reset(new SliderAttachment(valueTreeState, Constants::PARAMETER_ID::FREQUENCY_ID, freqKnob));
-	qAttachment.reset(new SliderAttachment(valueTreeState, Constants::PARAMETER_ID::Q_ID, qKnob));
-	bandwidthAttachment.reset(new SliderAttachment(valueTreeState, Constants::PARAMETER_ID::BANDWIDTH_ID, bandWidthKnob));
-	gainAttachment.reset(new SliderAttachment(valueTreeState, Constants::PARAMETER_ID::GAIN_ID, gainKnob));
 
-	for (int index = 0; index < sliders.size(); ++index)
+	for (int index = 0; index < Constants::CONTROLS.size(); ++index)
 	{
-		const auto& slider = sliders[index];
+
+		auto slider = std::make_unique<juce::Slider>();
 		slider->setRange(0.0, 1.0, 0.01);
 		slider->setSliderStyle(juce::Slider::SliderStyle::Rotary);
 		slider->setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxAbove, true, knobRange * 0.5, fontSize + 5);
@@ -65,29 +56,38 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 		);
 		//slider->setLookAndFeel(&customLookAndFeel);
 		slider->setRotaryParameters(startAngle, endAngle, true);
-		addAndMakeVisible(slider);
 
 		//Make label for knobs
-		const auto& label = labels[index];
+		auto label = std::make_unique<juce::Label>();
 		label->setFont(juce::Font(fontSize));
+		label->setText(Constants::CONTROLS[index].name, juce::dontSendNotification);
 		label->setJustificationType(juce::Justification::centred);
 		label->setBounds(
 			slider->getX(),
-			slider->getBottom(),
+			slider->getBottom() - 5,
 			slider->getWidth(),
 			fontSize
 		);
-		addAndMakeVisible(label);
+
+		addAndMakeVisible(slider.get());
+		addAndMakeVisible(label.get());
+
+		auto attachment = std::make_unique<SliderAttachment>(valueTreeState, Constants::CONTROLS[index].id, *slider);
+		attachment.reset(new SliderAttachment(valueTreeState, Constants::CONTROLS[index].id, *slider));
+
+		// Add the slider, label, and attachment to a new Controll instance
+		controls.add(Controll(std::move(slider), std::move(label), std::move(attachment)));
+
 	}
 }
 
 MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
 {
 	DBG("Editor Destructed");
-	freqAttachment.reset();
-	qAttachment.reset();
-	bandwidthAttachment.reset();
-	gainAttachment.reset();
+	for (auto& control : controls)
+	{
+		control.attachment.reset();
+	}
 }
 
 //==============================================================================

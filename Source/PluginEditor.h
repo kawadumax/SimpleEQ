@@ -12,6 +12,7 @@
 #include "PluginProcessor.h"
 #include "Constants.h"
 #include "CustomLookAndFeel.h"
+#include "Controll.h"
 
 //==============================================================================
 /**
@@ -38,25 +39,12 @@ private:
 
 	juce::AudioProcessorValueTreeState& valueTreeState;
 	std::unique_ptr<ComboBoxAttachment> filterTypeBoxAttachment;
-	std::unique_ptr<SliderAttachment> freqAttachment;
-	std::unique_ptr<SliderAttachment> qAttachment;
-	std::unique_ptr<SliderAttachment> bandwidthAttachment;
-	std::unique_ptr<SliderAttachment> gainAttachment;
 
 	juce::ComboBox filterTypeComboBox;
 
-	juce::Slider freqKnob;
-	juce::Slider qKnob;
-	juce::Slider bandWidthKnob;
-	juce::Slider gainKnob;
-	juce::Array <juce::Slider*> sliders;
-
-	juce::Label freqLabel;
-	juce::Label qLabel;
-	juce::Label bandWidthLabel;
-	juce::Label gainLabel;
-	juce::Array<juce::Label*> labels;
 	//CustomLookAndFeel customLookAndFeel;
+
+	juce::Array<Controll> controls;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultibandReverbAudioProcessorEditor)
 };
