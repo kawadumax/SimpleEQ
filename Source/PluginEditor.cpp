@@ -14,10 +14,6 @@
 //==============================================================================
 MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(MultibandReverbAudioProcessor& p, juce::AudioProcessorValueTreeState& vts)
 	: AudioProcessorEditor(&p), audioProcessor(p), valueTreeState(vts),
-	freqKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxAbove),
-	qKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxAbove),
-	bandWidthKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxAbove),
-	gainKnob(juce::Slider::SliderStyle::Rotary, juce::Slider::TextEntryBoxPosition::TextBoxAbove),
 	sliders({ &freqKnob, &qKnob, &bandWidthKnob, &gainKnob }),
 	freqLabel("FrequencyLabel", "Frequency"),
 	qLabel("QLabel", "Q"),
@@ -44,10 +40,6 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	// Create a ComboBox
 	filterTypeComboBox.addItemList(Constants::FILTER_OPTIONS, 1);
 	filterTypeComboBox.setBounds(10, 50, 100, 30);
-
-	//// Attach this component as a listener for the ComboBox
-	//filterTypeComboBox.addListener(this);
-
 	filterTypeBoxAttachment.reset(new ComboBoxAttachment(valueTreeState, Constants::PARAMETER_ID::FILTER_TYPE_ID, filterTypeComboBox)); // ’Ç‰Á
 
 	//// Add the ComboBox to this component
@@ -63,6 +55,8 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	{
 		const auto& slider = sliders[index];
 		slider->setRange(0.0, 1.0, 0.01);
+		slider->setSliderStyle(juce::Slider::SliderStyle::Rotary);
+		slider->setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxAbove, true, knobRange * 0.5, fontSize + 5);
 		slider->setBounds(
 			startKnobPosX + (knobRange + knobPadding) * index - knobRange * 0.5,
 			height * 0.75 - knobRange * 0.5,
@@ -71,7 +65,6 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 		);
 		//slider->setLookAndFeel(&customLookAndFeel);
 		slider->setRotaryParameters(startAngle, endAngle, true);
-		//slider->addListener(this);
 		addAndMakeVisible(slider);
 
 		//Make label for knobs
