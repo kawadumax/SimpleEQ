@@ -11,7 +11,7 @@
 #include <JuceHeader.h>
 #include "MyFilter.h"
 #include "Constants.h"
-
+#include "ParameterManager.h"
 //==============================================================================
 
 class MultibandReverbAudioProcessor : public juce::AudioProcessor
@@ -63,7 +63,12 @@ public:
 	void parameterChanged(const juce::String& parameterID, float newValue) override;
 
 private:
-	juce::AudioProcessorValueTreeState audioProcessorValueTreeState;
+
+	void changeFilterType(float choice);
+
+	juce::AudioProcessorValueTreeState apvts;
+	//juce::HashMap<String, AudioParameterFloat*> parameters;
+	ParameterManager parameterManager;
 	CMyFilter cMyFilter;
 
 	//==============================================================================

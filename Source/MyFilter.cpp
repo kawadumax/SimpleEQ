@@ -1,5 +1,6 @@
 #pragma once
 #include <math.h>
+#include <JuceHeader.h>
 #include "MyFilter.h"
 
 
@@ -21,6 +22,8 @@ CMyFilter::CMyFilter()
 
 	out1 = 0.0f;
 	out2 = 0.0f;
+
+	samplerate = 44100;
 }
 
 // --------------------------------------------------------------------------------
@@ -28,6 +31,10 @@ CMyFilter::CMyFilter()
 // --------------------------------------------------------------------------------
 float CMyFilter::Process(float in)
 {
+	if (a0 == 0.0f) {
+		return in; // a0 が 0 の場合、入力信号をそのまま返す
+	}
+
 	// 入力信号にフィルタを適用し、出力信号変数に保存。
 	float out = b0 / a0 * in + b1 / a0 * in1 + b2 / a0 * in2
 		- a1 / a0 * out1 - a2 / a0 * out2;
@@ -45,7 +52,7 @@ float CMyFilter::Process(float in)
 // --------------------------------------------------------------------------------
 // フィルタ係数を計算するメンバー関数
 // --------------------------------------------------------------------------------
-void CMyFilter::LowPass(float freq, float q, float samplerate)
+void CMyFilter::LowPass(float freq, float q)
 {
 	// フィルタ係数計算で使用する中間値を求める。
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
@@ -60,7 +67,7 @@ void CMyFilter::LowPass(float freq, float q, float samplerate)
 	b2 = (1.0f - cos(omega)) / 2.0f;
 }
 
-void CMyFilter::HighPass(float freq, float q, float samplerate)
+void CMyFilter::HighPass(float freq, float q)
 {
 	// フィルタ係数計算で使用する中間値を求める。
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
@@ -75,7 +82,7 @@ void CMyFilter::HighPass(float freq, float q, float samplerate)
 	b2 = (1.0f + cos(omega)) / 2.0f;
 }
 
-void CMyFilter::BandPass(float freq, float bw, float samplerate)
+void CMyFilter::BandPass(float freq, float bw)
 {
 	// フィルタ係数計算で使用する中間値を求める。
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
@@ -90,7 +97,7 @@ void CMyFilter::BandPass(float freq, float bw, float samplerate)
 	b2 = -alpha;
 }
 
-void CMyFilter::Notch(float freq, float bw, float samplerate)
+void CMyFilter::Notch(float freq, float bw)
 {
 	// フィルタ係数計算で使用する中間値を求める。
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
@@ -105,7 +112,7 @@ void CMyFilter::Notch(float freq, float bw, float samplerate)
 	b2 = 1.0f;
 }
 
-void CMyFilter::LowShelf(float freq, float q, float gain, float samplerate)
+void CMyFilter::LowShelf(float freq, float q, float gain)
 {
 	// フィルタ係数計算で使用する中間値を求める。
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
@@ -122,7 +129,7 @@ void CMyFilter::LowShelf(float freq, float q, float gain, float samplerate)
 	b2 = A * ((A + 1.0f) - (A - 1.0f) * cos(omega) - beta * sin(omega));
 }
 
-void CMyFilter::HighShelf(float freq, float q, float gain, float samplerate)
+void CMyFilter::HighShelf(float freq, float q, float gain)
 {
 	// フィルタ係数計算で使用する中間値を求める。
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
@@ -140,7 +147,7 @@ void CMyFilter::HighShelf(float freq, float q, float gain, float samplerate)
 }
 
 
-void CMyFilter::Peaking(float freq, float bw, float gain, float samplerate)
+void CMyFilter::Peaking(float freq, float bw, float gain)
 {
 	// フィルタ係数計算で使用する中間値を求める。
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
@@ -156,7 +163,7 @@ void CMyFilter::Peaking(float freq, float bw, float gain, float samplerate)
 	b2 = 1.0f - alpha * A;
 }
 
-void CMyFilter::AllPass(float freq, float q, float samplerate)
+void CMyFilter::AllPass(float freq, float q)
 {
 	// フィルタ係数計算で使用する中間値を求める。
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
@@ -169,4 +176,8 @@ void CMyFilter::AllPass(float freq, float q, float samplerate)
 	b0 = 1.0f - alpha;
 	b1 = -2.0f * cos(omega);
 	b2 = 1.0f + alpha;
+}
+
+void CMyFilter::setSampleRate(float rate) {
+	samplerate = rate;
 }

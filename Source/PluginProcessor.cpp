@@ -10,6 +10,7 @@
 #include "PluginEditor.h"
 #include "Constants.h"
 
+using PARAMETER_ID = Constants::PARAMETER_ID;
 //==============================================================================
 MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -20,34 +21,34 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 #endif
 		.withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
-	), audioProcessorValueTreeState(
+	), apvts(
 		*this, nullptr, "PARAMETERS", {
 		std::make_unique<juce::AudioParameterChoice>(
-			Constants::PARAMETER_ID::FILTER_TYPE_ID,
+			PARAMETER_ID::FILTER_TYPE_ID,
 			"Filter Type",
 			Constants::FILTER_OPTIONS,
 			0
 			),
 		std::make_unique<juce::AudioParameterFloat>(
-			Constants::PARAMETER_ID::FREQUENCY_ID,
+			PARAMETER_ID::FREQUENCY_ID,
 			"Frequency",
-			juce::NormalisableRange<float>(0.0, 1.0, 0.01),
-			0.5
+			juce::NormalisableRange<float>(30.0, 20000.0, 2),
+			400
 			),
 		std::make_unique<juce::AudioParameterFloat>(
-			Constants::PARAMETER_ID::Q_ID,
+			PARAMETER_ID::Q_ID,
 			"Q",
 			juce::NormalisableRange<float>(0.0, 1.0, 0.01),
 			0.5
 			),
 		std::make_unique<juce::AudioParameterFloat>(
-			Constants::PARAMETER_ID::BANDWIDTH_ID,
+			PARAMETER_ID::BANDWIDTH_ID,
 			"Bandwidth",
 			juce::NormalisableRange<float>(0.0, 1.0, 0.01),
 			0.5
 			),
 		std::make_unique<juce::AudioParameterFloat>(
-			Constants::PARAMETER_ID::GAIN_ID,
+			PARAMETER_ID::GAIN_ID,
 			"Gain",
 			juce::NormalisableRange<float>(0.0, 1.0, 0.01),
 			0.5
@@ -59,9 +60,17 @@ MultibandReverbAudioProcessor::MultibandReverbAudioProcessor() :
 {
 	DBG("Procrssor Initializing");
 
-	cMyFilter.LowPass(400.0, 1.0, getSampleRate());
+	apvts.addParameterListener(PARAMETER_ID::FREQUENCY_ID, this);
+	apvts.addParameterListener(PARAMETER_ID::Q_ID, this);
+	apvts.addParameterListener(PARAMETER_ID::BANDWIDTH_ID, this);
+	apvts.addParameterListener(PARAMETER_ID::GAIN_ID, this);
+	apvts.addParameterListener(PARAMETER_ID::FILTER_TYPE_ID, this);
 
-	audioProcessorValueTreeState.addParameterListener(Constants::PARAMETER_ID::FILTER_TYPE_ID, this);
+	parameterManager.set(PARAMETER_ID::FREQUENCY_ID, apvts.getParameter(PARAMETER_ID::FREQUENCY_ID));
+	parameterManager.set(PARAMETER_ID::Q_ID, apvts.getParameter(PARAMETER_ID::Q_ID));
+	parameterManager.set(PARAMETER_ID::BANDWIDTH_ID, apvts.getParameter(PARAMETER_ID::BANDWIDTH_ID));
+	parameterManager.set(PARAMETER_ID::GAIN_ID, apvts.getParameter(PARAMETER_ID::GAIN_ID));
+	parameterManager.set(PARAMETER_ID::FILTER_TYPE_ID, apvts.getParameter(PARAMETER_ID::FILTER_TYPE_ID));
 }
 
 MultibandReverbAudioProcessor::~MultibandReverbAudioProcessor()
@@ -136,6 +145,10 @@ void MultibandReverbAudioProcessor::prepareToPlay(double sampleRate, int samples
 {
 	// Use this method as the place to do any pre-playback
 	// initialisation that you need..
+	cMyFilter.setSampleRate(sampleRate);
+	const auto f = parameterManager.getValueByID(PARAMETER_ID::FREQUENCY_ID);
+	const auto q = parameterManager.getValueByID(PARAMETER_ID::Q_ID);
+	cMyFilter.LowPass(f, q);
 
 }
 
@@ -213,7 +226,7 @@ bool MultibandReverbAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* MultibandReverbAudioProcessor::createEditor()
 {
-	return new MultibandReverbAudioProcessorEditor(*this, audioProcessorValueTreeState);
+	return new MultibandReverbAudioProcessorEditor(*this, apvts);
 }
 
 //==============================================================================
@@ -236,61 +249,70 @@ void MultibandReverbAudioProcessor::setStateInformation(const void* data, int si
 //	DBG("You Gestured");
 //}
 
-//void MultibandReverbAudioProcessor::parameterValueChanged(int parameterIndex, float newValue)
-//{
-//	// This method will be called whenever the parameter's value changes
-//	DBG("Parameter value changed : index = " +
-//		juce::String(parameterIndex) + "value = " + juce::String(newValue)
-//	);
-//	int choice = this->filterType->getIndex();
-//
-//	switch (choice) {
-//	case 0:
-//		DBG("You chose option 0");
-//		this->cMyFilter->LowPass(400.0, 1.0, getSampleRate());
-//		break;
-//	case 1:
-//		DBG("You chose option 1");
-//		this->cMyFilter->HighPass(10000.0, 1.0, getSampleRate());
-//		break;
-//	case 2:
-//		DBG("You chose option 2");
-//		this->cMyFilter->BandPass(400.0, 1.0, getSampleRate());
-//		break;
-//	case 3:
-//		DBG("You chose option 3");
-//		this->cMyFilter->Notch(400.0, 1.0, getSampleRate());
-//		break;
-//	case 4:
-//		DBG("You chose option 4");
-//		this->cMyFilter->LowShelf(400.0, 1.0, getSampleRate());
-//		break;
-//	case 5:
-//		DBG("You chose option 5");
-//		this->cMyFilter->HighShelf(400.0, 1.0, getSampleRate());
-//		break;
-//	case 6:
-//		DBG("You chose option 6");
-//		this->cMyFilter->Peaking(400.0, 1.0, getSampleRate());
-//		break;
-//	case 7:
-//		DBG("You chose option 7");
-//		this->cMyFilter->AllPass(400.0, 1.0, getSampleRate());
-//		break;
-//	default:
-//		DBG("Invalid choice");
-//	}
-//}
-//void MultibandReverbAudioProcessor::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
-//{
-//	DBG("Value tree Property changed : ID = " + property);
-//}
+void MultibandReverbAudioProcessor::changeFilterType(float choice)
+{
+	// This method will be called whenever the parameter's value changes
+	//const auto f = apvts.getParameter(PARAMETER_ID::FREQUENCY_ID)->getValue();
+	//const auto q = apvts.getParameter(PARAMETER_ID::Q_ID)->getValue();
+	//const auto bw = apvts.getParameter(PARAMETER_ID::BANDWIDTH_ID)->getValue();
+	//const auto g = apvts.getParameter(PARAMETER_ID::GAIN_ID)->getValue();
+
+	const auto f = parameterManager.getValueByID(PARAMETER_ID::FREQUENCY_ID);
+	const auto q = parameterManager.getValueByID(PARAMETER_ID::Q_ID);
+	const auto bw = parameterManager.getValueByID(PARAMETER_ID::BANDWIDTH_ID);
+	const auto g = parameterManager.getValueByID(PARAMETER_ID::GAIN_ID);
+
+	switch (int(choice)) {
+	case 0:
+		DBG("You chose option 0");
+		cMyFilter.LowPass(f, q);
+		break;
+	case 1:
+		DBG("You chose option 1");
+		cMyFilter.HighPass(f, q);
+		break;
+	case 2:
+		DBG("You chose option 2");
+		cMyFilter.BandPass(f, bw);
+		break;
+	case 3:
+		DBG("You chose option 3");
+		cMyFilter.Notch(f, bw);
+		break;
+	case 4:
+		DBG("You chose option 4");
+		cMyFilter.LowShelf(f, q, g);
+		break;
+	case 5:
+		DBG("You chose option 5");
+		cMyFilter.HighShelf(f, q, g);
+		break;
+	case 6:
+		DBG("You chose option 6");
+		cMyFilter.Peaking(f, bw, g);
+		break;
+	case 7:
+		DBG("You chose option 7");
+		cMyFilter.AllPass(f, q);
+		break;
+	default:
+		DBG("Invalid choice");
+	}
+}
 
 void MultibandReverbAudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
 {
 	DBG("Parameter value changed : ID = " +
 		parameterID + " value = " + juce::String(newValue)
 	);
+
+	if (parameterID == Constants::PARAMETER_ID::FILTER_TYPE_ID) {
+		changeFilterType(newValue);
+	}
+	else {
+		const auto filterType = apvts.getParameter(PARAMETER_ID::FILTER_TYPE_ID)->getValue();
+		changeFilterType(filterType);
+	}
 }
 
 //==============================================================================
