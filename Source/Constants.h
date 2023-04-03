@@ -12,7 +12,7 @@ public:
 		{
 			constants.set("PI", 3.14159);
 			constants.set("GRAVITY", 9.81);
-			// ‘¼‚Ì’è”‚à‚±‚±‚ÅƒZƒbƒg‚·‚é
+			// â€˜Â¼â€šÃŒâ€™Ã¨â€â€šÃ â€šÂ±â€šÂ±â€šÃ…Æ’ZÆ’bÆ’gâ€šÂ·â€šÃ©
 		}
 		return constants;
 	}
@@ -44,10 +44,10 @@ public:
 		String id;
 		String name;
 
-		// ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// Æ’fÆ’tÆ’HÆ’â€¹Æ’gÆ’RÆ’â€œÆ’XÆ’gÆ’â€°Æ’NÆ’^
 		PARAMETER() = default;
 
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğ’Ç‰Á
+		// Æ’RÆ’â€œÆ’XÆ’gÆ’â€°Æ’NÆ’^â€šÃ°â€™Ã‡â€°Ã
 		PARAMETER(const String& id, const String& name)
 			: id(id), name(name) {}
 	};
@@ -64,6 +64,6 @@ public:
 	inline static const juce::Array<PARAMETER> CONTROLS = createControlsArray();
 };
 
-// Constants‚ğg‚¤—á
+// Constantsâ€šÃ°Å½gâ€šÂ¤â€”Ã¡
 //double pi = Constants::getConstants()["PI"];
 //double g = Constants::getConstants()["GRAVITY"];

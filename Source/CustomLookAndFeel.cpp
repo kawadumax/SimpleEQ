@@ -3,8 +3,8 @@
 
 void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider)
 {
-	// ƒmƒu‚Ì•`‰æ•û–@‚ğ‚±‚±‚É‹Lq‚µ‚Ü‚·B
-	// ‰~üã‚ÌƒXƒ‰ƒCƒ_[‚ÌˆÊ’u‚ğŒvZ
+	// Æ’mÆ’uâ€šÃŒâ€¢`â€°Ã¦â€¢Ã»â€“@â€šÃ°â€šÂ±â€šÂ±â€šÃ‰â€¹Lqâ€šÂµâ€šÃœâ€šÂ·B
+	// â€°~Å½Ã¼Ã£â€šÃŒÆ’XÆ’â€°Æ’CÆ’_[â€šÃŒË†ÃŠâ€™uâ€šÃ°Å’vÅ½Z
 
 	float angle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
 	float radius = juce::jmin(width / 2, height / 2) - 10.0f;
@@ -16,12 +16,12 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 
 	DBG("angle: " + juce::String(angle));
 
-	// ƒXƒ‰ƒCƒ_[‚Ì”wŒi‚ğ•`‰æ
+	// Æ’XÆ’â€°Æ’CÆ’_[â€šÃŒâ€wÅ’iâ€šÃ°â€¢`â€°Ã¦
 	g.setColour(juce::Colours::darkgrey);
 	//g.drawEllipse(x, y, width, height, 2.0f);
 	g.fillEllipse(x, y, width, height);
 
-	// ƒXƒ‰ƒCƒ_[‚Ì‚Â‚Ü‚İ‚ğ•`‰æ
+	// Æ’XÆ’â€°Æ’CÆ’_[â€šÃŒâ€šÃ‚â€šÃœâ€šÃâ€šÃ°â€¢`â€°Ã¦
 	g.setColour(juce::Colours::white);
 	g.fillEllipse(thumbCenterX - thumbRadius * 0.5f, thumbCenterY - thumbRadius * 0.5f, thumbRadius, thumbRadius);
 }

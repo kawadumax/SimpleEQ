@@ -17,13 +17,13 @@
 //==============================================================================
 /**
 */
-class MultibandReverbAudioProcessorEditor : public juce::AudioProcessorEditor
+class SimpleEQAudioProcessorEditor : public juce::AudioProcessorEditor
 
 {
 public:
-	MultibandReverbAudioProcessorEditor(MultibandReverbAudioProcessor& p,
+	SimpleEQAudioProcessorEditor(SimpleEQAudioProcessor& p,
 		juce::AudioProcessorValueTreeState& vts);
-	~MultibandReverbAudioProcessorEditor() override;
+	~SimpleEQAudioProcessorEditor() override;
 
 	//==============================================================================
 	void paint(juce::Graphics&) override;
@@ -32,7 +32,7 @@ public:
 private:
 	// This reference is provided as a quick way for your editor to
 	// access the processor object that created it.
-	MultibandReverbAudioProcessor& audioProcessor;
+	SimpleEQAudioProcessor& audioProcessor;
 
 	typedef juce::AudioProcessorValueTreeState::ComboBoxAttachment ComboBoxAttachment; // ’Ç‰Á
 	typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
@@ -46,5 +46,5 @@ private:
 
 	juce::Array<Controll> controls;
 
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultibandReverbAudioProcessorEditor)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SimpleEQAudioProcessorEditor)
 };

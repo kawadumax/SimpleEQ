@@ -12,7 +12,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(MultibandReverbAudioProcessor& p, juce::AudioProcessorValueTreeState& vts)
+SimpleEQAudioProcessorEditor::SimpleEQAudioProcessorEditor(SimpleEQAudioProcessor& p, juce::AudioProcessorValueTreeState& vts)
 	: AudioProcessorEditor(&p), audioProcessor(p), valueTreeState(vts)
 {
 	DBG("Editor Constructed");
@@ -81,7 +81,7 @@ MultibandReverbAudioProcessorEditor::MultibandReverbAudioProcessorEditor(Multiba
 	}
 }
 
-MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
+SimpleEQAudioProcessorEditor::~SimpleEQAudioProcessorEditor()
 {
 	DBG("Editor Destructed");
 	for (auto& control : controls)
@@ -91,13 +91,13 @@ MultibandReverbAudioProcessorEditor::~MultibandReverbAudioProcessorEditor()
 }
 
 //==============================================================================
-void MultibandReverbAudioProcessorEditor::paint(juce::Graphics& g)
+void SimpleEQAudioProcessorEditor::paint(juce::Graphics& g)
 {
 	g.fillAll(juce::Colour(50, 62, 68));
 
 }
 
-void MultibandReverbAudioProcessorEditor::resized()
+void SimpleEQAudioProcessorEditor::resized()
 {
 	// This is generally where you'll want to lay out the positions of any
 	// subcomponents in your editor..

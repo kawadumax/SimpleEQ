@@ -5,12 +5,12 @@
 
 
 // --------------------------------------------------------------------------------
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// Æ’RÆ’â€œÆ’XÆ’gÆ’â€°Æ’NÆ’^
 // --------------------------------------------------------------------------------
 CMyFilter::CMyFilter()
 {
-	// ƒƒ“ƒo[•Ï”‚ğ‰Šú‰»
-	a0 = 1.0f; // 0ˆÈŠO‚É‚µ‚Ä‚¨‚©‚È‚¢‚ÆœZ‚ÅƒGƒ‰[‚É‚È‚é
+	// Æ’Æ’â€œÆ’o[â€¢Ãâ€â€šÃ°â€°Å Ãºâ€°Â»
+	a0 = 1.0f; // 0Ë†ÃˆÅ Oâ€šÃ‰â€šÂµâ€šÃ„â€šÂ¨â€šÂ©â€šÃˆâ€šÂ¢â€šÃ†Å“Å½Zâ€šÃ…Æ’GÆ’â€°[â€šÃ‰â€šÃˆâ€šÃ©
 	a1 = 0.0f;
 	a2 = 0.0f;
 	b0 = 1.0f;
@@ -27,38 +27,38 @@ CMyFilter::CMyFilter()
 }
 
 // --------------------------------------------------------------------------------
-// “ü—ÍM†‚ÉƒtƒBƒ‹ƒ^‚ğ“K—p‚·‚éŠÖ”
+// â€œÃ¼â€”ÃMâ€ â€šÃ‰Æ’tÆ’BÆ’â€¹Æ’^â€šÃ°â€œKâ€”pâ€šÂ·â€šÃ©Å Ã–â€
 // --------------------------------------------------------------------------------
 float CMyFilter::Process(float in)
 {
 	if (a0 == 0.0f) {
-		return in; // a0 ‚ª 0 ‚Ìê‡A“ü—ÍM†‚ğ‚»‚Ì‚Ü‚Ü•Ô‚·
+		return in; // a0 â€šÂª 0 â€šÃŒÃªâ€¡Aâ€œÃ¼â€”ÃMâ€ â€šÃ°â€šÂ»â€šÃŒâ€šÃœâ€šÃœâ€¢Ã”â€šÂ·
 	}
 
-	// “ü—ÍM†‚ÉƒtƒBƒ‹ƒ^‚ğ“K—p‚µAo—ÍM†•Ï”‚É•Û‘¶B
+	// â€œÃ¼â€”ÃMâ€ â€šÃ‰Æ’tÆ’BÆ’â€¹Æ’^â€šÃ°â€œKâ€”pâ€šÂµAoâ€”ÃMâ€ â€¢Ãâ€â€šÃ‰â€¢Ã›â€˜Â¶B
 	float out = b0 / a0 * in + b1 / a0 * in1 + b2 / a0 * in2
 		- a1 / a0 * out1 - a2 / a0 * out2;
 
-	in2 = in1; // 2‚Â‘O‚Ì“ü—ÍM†‚ğXV
-	in1 = in;  // 1‚Â‘O‚Ì“ü—ÍM†‚ğXV
+	in2 = in1; // 2â€šÃ‚â€˜Oâ€šÃŒâ€œÃ¼â€”ÃMâ€ â€šÃ°XV
+	in1 = in;  // 1â€šÃ‚â€˜Oâ€šÃŒâ€œÃ¼â€”ÃMâ€ â€šÃ°XV
 
-	out2 = out1; // 2‚Â‘O‚Ìo—ÍM†‚ğXV
-	out1 = out;  // 1‚Â‘O‚Ìo—ÍM†‚ğXV
+	out2 = out1; // 2â€šÃ‚â€˜Oâ€šÃŒoâ€”ÃMâ€ â€šÃ°XV
+	out1 = out;  // 1â€šÃ‚â€˜Oâ€šÃŒoâ€”ÃMâ€ â€šÃ°XV
 
-	// o—ÍM†‚ğ•Ô‚·
+	// oâ€”ÃMâ€ â€šÃ°â€¢Ã”â€šÂ·
 	return out;
 }
 
 // --------------------------------------------------------------------------------
-// ƒtƒBƒ‹ƒ^ŒW”‚ğŒvZ‚·‚éƒƒ“ƒo[ŠÖ”
+// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€â€šÃ°Å’vÅ½Zâ€šÂ·â€šÃ©Æ’Æ’â€œÆ’o[Å Ã–â€
 // --------------------------------------------------------------------------------
 void CMyFilter::LowPass(float freq, float q)
 {
-	// ƒtƒBƒ‹ƒ^ŒW”ŒvZ‚Åg—p‚·‚é’†ŠÔ’l‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€Å’vÅ½Zâ€šÃ…Å½gâ€”pâ€šÂ·â€šÃ©â€™â€ Å Ã”â€™lâ€šÃ°â€¹â€šÃŸâ€šÃ©B
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
 	float alpha = sin(omega) / (2.0f * q);
 
-	// ƒtƒBƒ‹ƒ^ŒW”‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€â€šÃ°â€¹â€šÃŸâ€šÃ©B
 	a0 = 1.0f + alpha;
 	a1 = -2.0f * cos(omega);
 	a2 = 1.0f - alpha;
@@ -69,11 +69,11 @@ void CMyFilter::LowPass(float freq, float q)
 
 void CMyFilter::HighPass(float freq, float q)
 {
-	// ƒtƒBƒ‹ƒ^ŒW”ŒvZ‚Åg—p‚·‚é’†ŠÔ’l‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€Å’vÅ½Zâ€šÃ…Å½gâ€”pâ€šÂ·â€šÃ©â€™â€ Å Ã”â€™lâ€šÃ°â€¹â€šÃŸâ€šÃ©B
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
 	float alpha = sin(omega) / (2.0f * q);
 
-	// ƒtƒBƒ‹ƒ^ŒW”‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€â€šÃ°â€¹â€šÃŸâ€šÃ©B
 	a0 = 1.0f + alpha;
 	a1 = -2.0f * cos(omega);
 	a2 = 1.0f - alpha;
@@ -84,11 +84,11 @@ void CMyFilter::HighPass(float freq, float q)
 
 void CMyFilter::BandPass(float freq, float bw)
 {
-	// ƒtƒBƒ‹ƒ^ŒW”ŒvZ‚Åg—p‚·‚é’†ŠÔ’l‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€Å’vÅ½Zâ€šÃ…Å½gâ€”pâ€šÂ·â€šÃ©â€™â€ Å Ã”â€™lâ€šÃ°â€¹â€šÃŸâ€šÃ©B
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
 	float alpha = sin(omega) * sinh(log(2.0f) / 2.0 * bw * omega / sin(omega));
 
-	// ƒtƒBƒ‹ƒ^ŒW”‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€â€šÃ°â€¹â€šÃŸâ€šÃ©B
 	a0 = 1.0f + alpha;
 	a1 = -2.0f * cos(omega);
 	a2 = 1.0f - alpha;
@@ -99,11 +99,11 @@ void CMyFilter::BandPass(float freq, float bw)
 
 void CMyFilter::Notch(float freq, float bw)
 {
-	// ƒtƒBƒ‹ƒ^ŒW”ŒvZ‚Åg—p‚·‚é’†ŠÔ’l‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€Å’vÅ½Zâ€šÃ…Å½gâ€”pâ€šÂ·â€šÃ©â€™â€ Å Ã”â€™lâ€šÃ°â€¹â€šÃŸâ€šÃ©B
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
 	float alpha = sin(omega) * sinh(log(2.0f) / 2.0 * bw * omega / sin(omega));
 
-	// ƒtƒBƒ‹ƒ^ŒW”‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€â€šÃ°â€¹â€šÃŸâ€šÃ©B
 	a0 = 1.0f + alpha;
 	a1 = -2.0f * cos(omega);
 	a2 = 1.0f - alpha;
@@ -114,13 +114,13 @@ void CMyFilter::Notch(float freq, float bw)
 
 void CMyFilter::LowShelf(float freq, float q, float gain)
 {
-	// ƒtƒBƒ‹ƒ^ŒW”ŒvZ‚Åg—p‚·‚é’†ŠÔ’l‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€Å’vÅ½Zâ€šÃ…Å½gâ€”pâ€šÂ·â€šÃ©â€™â€ Å Ã”â€™lâ€šÃ°â€¹â€šÃŸâ€šÃ©B
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
 	float alpha = sin(omega) / (2.0f * q);
 	float A = pow(10.0f, (gain / 40.0f));
 	float beta = sqrt(A) / q;
 
-	// ƒtƒBƒ‹ƒ^ŒW”‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€â€šÃ°â€¹â€šÃŸâ€šÃ©B
 	a0 = (A + 1.0f) + (A - 1.0f) * cos(omega) + beta * sin(omega);
 	a1 = -2.0f * ((A - 1.0f) + (A + 1.0f) * cos(omega));
 	a2 = (A + 1.0f) + (A - 1.0f) * cos(omega) - beta * sin(omega);
@@ -131,13 +131,13 @@ void CMyFilter::LowShelf(float freq, float q, float gain)
 
 void CMyFilter::HighShelf(float freq, float q, float gain)
 {
-	// ƒtƒBƒ‹ƒ^ŒW”ŒvZ‚Åg—p‚·‚é’†ŠÔ’l‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€Å’vÅ½Zâ€šÃ…Å½gâ€”pâ€šÂ·â€šÃ©â€™â€ Å Ã”â€™lâ€šÃ°â€¹â€šÃŸâ€šÃ©B
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
 	float alpha = sin(omega) / (2.0f * q);
 	float A = pow(10.0f, (gain / 40.0f));
 	float beta = sqrt(A) / q;
 
-	// ƒtƒBƒ‹ƒ^ŒW”‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€â€šÃ°â€¹â€šÃŸâ€šÃ©B
 	a0 = (A + 1.0f) - (A - 1.0f) * cos(omega) + beta * sin(omega);
 	a1 = 2.0f * ((A - 1.0f) - (A + 1.0f) * cos(omega));
 	a2 = (A + 1.0f) - (A - 1.0f) * cos(omega) - beta * sin(omega);
@@ -149,12 +149,12 @@ void CMyFilter::HighShelf(float freq, float q, float gain)
 
 void CMyFilter::Peaking(float freq, float bw, float gain)
 {
-	// ƒtƒBƒ‹ƒ^ŒW”ŒvZ‚Åg—p‚·‚é’†ŠÔ’l‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€Å’vÅ½Zâ€šÃ…Å½gâ€”pâ€šÂ·â€šÃ©â€™â€ Å Ã”â€™lâ€šÃ°â€¹â€šÃŸâ€šÃ©B
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
 	float alpha = sin(omega) * sinh(log(2.0f) / 2.0 * bw * omega / sin(omega));
 	float A = pow(10.0f, (gain / 40.0f));
 
-	// ƒtƒBƒ‹ƒ^ŒW”‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€â€šÃ°â€¹â€šÃŸâ€šÃ©B
 	a0 = 1.0f + alpha / A;
 	a1 = -2.0f * cos(omega);
 	a2 = 1.0f - alpha / A;
@@ -165,11 +165,11 @@ void CMyFilter::Peaking(float freq, float bw, float gain)
 
 void CMyFilter::AllPass(float freq, float q)
 {
-	// ƒtƒBƒ‹ƒ^ŒW”ŒvZ‚Åg—p‚·‚é’†ŠÔ’l‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€Å’vÅ½Zâ€šÃ…Å½gâ€”pâ€šÂ·â€šÃ©â€™â€ Å Ã”â€™lâ€šÃ°â€¹â€šÃŸâ€šÃ©B
 	float omega = 2.0f * 3.14159265f * freq / samplerate;
 	float alpha = sin(omega) / (2.0f * q);
 
-	// ƒtƒBƒ‹ƒ^ŒW”‚ğ‹‚ß‚éB
+	// Æ’tÆ’BÆ’â€¹Æ’^Å’Wâ€â€šÃ°â€¹â€šÃŸâ€šÃ©B
 	a0 = 1.0f + alpha;
 	a1 = -2.0f * cos(omega);
 	a2 = 1.0f - alpha;

@@ -14,7 +14,7 @@
 #include "ParameterManager.h"
 //==============================================================================
 
-class MultibandReverbAudioProcessor : public juce::AudioProcessor
+class SimpleEQAudioProcessor : public juce::AudioProcessor
 #if JucePlugin_Enable_ARA
 	, public juce::AudioProcessorARAExtension
 #endif
@@ -22,8 +22,8 @@ class MultibandReverbAudioProcessor : public juce::AudioProcessor
 {
 public:
 	//==============================================================================
-	MultibandReverbAudioProcessor();
-	~MultibandReverbAudioProcessor() override;
+	SimpleEQAudioProcessor();
+	~SimpleEQAudioProcessor() override;
 
 	//==============================================================================
 	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
@@ -72,5 +72,5 @@ private:
 	CMyFilter cMyFilter;
 
 	//==============================================================================
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultibandReverbAudioProcessor)
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SimpleEQAudioProcessor)
 };
